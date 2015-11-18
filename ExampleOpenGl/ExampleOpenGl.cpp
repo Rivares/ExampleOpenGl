@@ -8,10 +8,9 @@
 #include <math.h>
 #include <iomanip>
 #include <cstdlib>
-//float schemFun();
-using namespace std;
-
 #include <GL/glut.h>
+
+using namespace std;
 
 
 void output(GLfloat x, GLfloat y, char* text)
@@ -29,9 +28,9 @@ void output(GLfloat x, GLfloat y, char* text)
 
 void displayMe()
 {
-	GLfloat cntrlpoints[10][5];
+	GLfloat cntrlpoints[60][5];
 	double  Gamma = 10016.6311911 * 0.0000005 / 0.25;;
-    double z[5] = {0, 0.25, 0.5, 0.75, 0}, schema[10][5], buf[5] = {0, 151.99, 156, 147.99, 0};
+    double z[5] = {0, 0.25, 0.5, 0.75, 0}, schema[60][5], buf[5] = {0, 151.99, 156, 147.99, 0};
     memset(schema, 0, sizeof(schema));
 
     for(int i = 0; i < 5; i++)
@@ -41,7 +40,7 @@ void displayMe()
 
     // DEFINED FOR ALL SCHEMA
 
-    for(int i = 1; i < 10; i++)
+    for(int i = 1; i < 60; i++)
     {
        for(int j = 1; j < 4; j++)
        {
@@ -49,7 +48,7 @@ void displayMe()
        }
     }
 
-    for(int i = 0; i < 10; i++)
+    for(int i = 0; i < 60; i++)
     {
        for(int j = 0; j < 5; j++)
        {
@@ -58,19 +57,19 @@ void displayMe()
        cout << endl;
     }
 
-	//-------------------------------------------------------
+	//------------------------------------------------------------------------------------------------
 
     glClear(GL_COLOR_BUFFER_BIT);
     glBegin(GL_LINES);
 
 	 // Drawing axis coordinates:
         glVertex2f(50, 50);  // one point of coordinates axis x
-        glVertex2f(640, 50);
+        glVertex2f(900, 50);
 
-		glVertex2f(640, 50);  // one part point of axis x
-        glVertex2f(630, 55);
-		glVertex2f(640, 50);  // two part point of axis x
-        glVertex2f(630, 45);
+		glVertex2f(900, 50);  // one part point of axis x
+        glVertex2f(890, 55);
+		glVertex2f(900, 50);  // two part point of axis x
+        glVertex2f(890, 45);
 
         glVertex2f(50, 50);  // one point of coordinates axis y
 	    glVertex2f(50, 480);
@@ -93,7 +92,7 @@ void displayMe()
         glVertex2f(55, 379);
 		//output(35,420, "147.99");
 
-		for(short i = 100; i < 630; i += 50)
+		for(short i = 60; i < 890; i += 10)
 		{
 		    glVertex2f(i, 45);  // other lines on axis x
             glVertex2f(i, 55);
@@ -103,12 +102,12 @@ void displayMe()
 		for(short i = 0; i < 5; ++i)
 		{
 			float xbuf = 50;
-			for(short m = 0; m < 9; ++m)
+			for(short m = 0; m < 59; ++m)
 			{
 			   float buf = 2.56 * cntrlpoints[m][i];
 	           glVertex2f(xbuf, buf); 
 
-			   xbuf += 50;  // step
+			   xbuf += 10;  // step
 
 			   buf = 2.56 * cntrlpoints[m+1][i];
                glVertex2f(xbuf, buf);
@@ -125,13 +124,13 @@ int main(int argc, char** argv)
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE);
-    glutInitWindowSize(640, 480);
+    glutInitWindowSize(900, 480);
     glutInitWindowPosition(100, 100);
     glutCreateWindow("Hello world :D");
 
 	glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluOrtho2D(0, 640, 0, 480);
+    gluOrtho2D(0, 900, 0, 480);
 
 	glutDisplayFunc(displayMe);
     glutMainLoop();
