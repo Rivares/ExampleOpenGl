@@ -17,20 +17,21 @@ void output(GLfloat x, GLfloat y, char* text)
 {
     glPushMatrix();
     glTranslatef(x, y, 0);
-    glScalef(1/500, 1/500, 1/500);
-
+	GLfloat ficks = -0.5f;
+	glScalef(ficks, ficks, 1.0f);
 	for( char* p = text; *p; p++)
     {
-        glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
+        glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN, *p);
     }
     glPopMatrix();
 }
 
+
 void displayMe()
 {
-	GLfloat cntrlpoints[60][5];
+	GLfloat cntrlpoints[100][5];
 	double  Gamma = 10016.6311911 * 0.0000005 / 0.25;;
-    double z[5] = {0, 0.25, 0.5, 0.75, 0}, schema[60][5], buf[5] = {0, 151.99, 156, 147.99, 0};
+    double z[5] = {0, 0.25, 0.5, 0.75, 0}, schema[100][5], buf[5] = {0, 151.99, 156, 147.99, 0};
     memset(schema, 0, sizeof(schema));
 
     for(int i = 0; i < 5; i++)
@@ -40,15 +41,16 @@ void displayMe()
 
     // DEFINED FOR ALL SCHEMA
 
-    for(int i = 1; i < 60; i++)
+    for(int i = 1; i < 100; i++)   // n: t
     {
-       for(int j = 1; j < 4; j++)
+       for(int j = 1; j < 4; j++)  // i: z
        {
-           schema[i][j] = ( (1 - (2*Gamma) ) * schema[i - 1][j] ) + ( Gamma *(schema[i - 1][j + 1] + schema[i - 1][j - 1]) - (i*0.06));
+           //schema[i][j] = ( (1 - (2*Gamma) ) * schema[i-1][j] ) + ( Gamma *(schema[i-1][j+1] + schema[i-1][j-1])) - ((i*0.02));
+		   schema[i][j] = (-Gamma) * ( schema[i-1][j+1] + schema[i-1][j-1] ) + schema[i-1][j] - (i*0.02);
        }
     }
 
-    for(int i = 0; i < 60; i++)
+    for(int i = 0; i < 100; i++)
     {
        for(int j = 0; j < 5; j++)
        {
@@ -102,7 +104,7 @@ void displayMe()
 		for(short i = 0; i < 5; ++i)
 		{
 			float xbuf = 50;
-			for(short m = 0; m < 59; ++m)
+			for(short m = 0; m < 99; ++m)
 			{
 			   float buf = 2.56 * cntrlpoints[m][i];
 	           glVertex2f(xbuf, buf); 
@@ -124,13 +126,13 @@ int main(int argc, char** argv)
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE);
-    glutInitWindowSize(900, 480);
+    glutInitWindowSize(900, 780);
     glutInitWindowPosition(100, 100);
     glutCreateWindow("Hello world :D");
 
 	glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluOrtho2D(0, 900, 0, 480);
+    gluOrtho2D(0, 900, 0, 780);
 
 	glutDisplayFunc(displayMe);
     glutMainLoop();
