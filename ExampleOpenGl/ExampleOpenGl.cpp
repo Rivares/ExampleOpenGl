@@ -48,7 +48,7 @@ void displayMe()
        {
            //schema[i][j] = ( (1 - (2*Gamma) ) * schema[i-1][j] ) + ( Gamma *(schema[i-1][j+1] + schema[i-1][j-1])) - ((i*0.02));
 		   //schema[i][j] = (-Gamma) * ( schema[i-1][j+1] + schema[i-1][j-1] ) + schema[i-1][j] - (i*0.02);
-		   schema[i][j] = schema[i-1][j] - ( Gamma*( schema[i-1][j-1] - schema[i-1][j+1] ) ) - (i*0.02);
+		   schema[i][j] = schema[i-1][j] * ( (-Gamma) - (i * 0.001) + 1) - (Gamma * schema[i-1][j-1]) + (i * 0.001 * 120);
        }
     }
 
