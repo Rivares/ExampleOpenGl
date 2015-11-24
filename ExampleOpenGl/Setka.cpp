@@ -7,7 +7,7 @@
 
 using namespace std;
 
-int main()
+int Setka()
 {
 
 
@@ -56,9 +56,6 @@ int main()
        }
        cout << endl;
     }
-
-
-
 
     return 0;
 }

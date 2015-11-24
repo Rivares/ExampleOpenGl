@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <cstdlib>
 #include <GL/glut.h>
+#include "Setka.h"
 
 using namespace std;
 
@@ -46,10 +47,12 @@ void displayMe()
        for(int j = 1; j < 4; j++)  // i: z
        {
            //schema[i][j] = ( (1 - (2*Gamma) ) * schema[i-1][j] ) + ( Gamma *(schema[i-1][j+1] + schema[i-1][j-1])) - ((i*0.02));
-		   schema[i][j] = (-Gamma) * ( schema[i-1][j+1] + schema[i-1][j-1] ) + schema[i-1][j] - (i*0.02);
+		   //schema[i][j] = (-Gamma) * ( schema[i-1][j+1] + schema[i-1][j-1] ) + schema[i-1][j] - (i*0.02);
+		   schema[i][j] = schema[i-1][j] - ( Gamma*( schema[i-1][j-1] - schema[i-1][j+1] ) ) - (i*0.02);
        }
     }
 
+	
     for(int i = 0; i < 100; i++)
     {
        for(int j = 0; j < 5; j++)
