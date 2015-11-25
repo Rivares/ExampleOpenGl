@@ -1,6 +1,3 @@
-// ExampleOpenGl.cpp: определяет точку входа для консольного приложения.
-//
-
 
 #include "stdafx.h"
 #include <iostream>
@@ -30,9 +27,9 @@ void output(GLfloat x, GLfloat y, char* text)
 
 void displayMe()
 {
-	GLfloat cntrlpoints[100][5];
-	double  Gamma = 10016.6311911 * 0.0000005 / 0.25;;
-    double z[5] = {0, 0.25, 0.5, 0.75, 0}, schema[100][5], buf[5] = {0, 151.99, 156, 147.99, 0};
+	GLfloat cntrlpoints[1000][5];
+	double  t = 0.0005, Gamma = 10016.6311911 * t / 140;
+    double  schema[1000][5], buf[5] = {0, 156, 151.99, 147.99, 0};
     memset(schema, 0, sizeof(schema));
 
     for(int i = 0; i < 5; i++)
@@ -42,18 +39,18 @@ void displayMe()
 
     // DEFINED FOR ALL SCHEMA
 
-    for(int i = 1; i < 100; i++)   // n: t
+    for(int i = 1; i < 1000; i++)   // n: t
     {
        for(int j = 1; j < 4; j++)  // i: z
        {
            //schema[i][j] = ( (1 - (2*Gamma) ) * schema[i-1][j] ) + ( Gamma *(schema[i-1][j+1] + schema[i-1][j-1])) - ((i*0.02));
 		   //schema[i][j] = (-Gamma) * ( schema[i-1][j+1] + schema[i-1][j-1] ) + schema[i-1][j] - (i*0.02);
-		   schema[i][j] = schema[i-1][j] * ( (-Gamma) - (i * 0.001) + 1) - (Gamma * schema[i-1][j-1]) + (i * 0.001 * 120);
+		   schema[i][j] = schema[i-1][j] * ( (-Gamma) - (t * 0.001) + 1) + (Gamma * schema[i-1][j-1]) + (t * 0.001 * 120);
        }
     }
 
 	
-    for(int i = 0; i < 100; i++)
+    for(int i = 0; i < 1000; i++)
     {
        for(int j = 0; j < 5; j++)
        {
@@ -68,60 +65,86 @@ void displayMe()
     glBegin(GL_LINES);
 
 	 // Drawing axis coordinates:
-        glVertex2f(50, 50);  // one point of coordinates axis x
-        glVertex2f(900, 50);
+        glVertex2f(25, 5);  // one point of coordinates axis x
+        glVertex2f(1000, 5);
 
-		glVertex2f(900, 50);  // one part point of axis x
-        glVertex2f(890, 55);
-		glVertex2f(900, 50);  // two part point of axis x
-        glVertex2f(890, 45);
+		glVertex2f(1000, 5);  // one part point of axis x
+        glVertex2f(990, 10);
+		glVertex2f(1000, 5);  // two part point of axis x
+        glVertex2f(990, 0);
 
-        glVertex2f(50, 50);  // one point of coordinates axis y
-	    glVertex2f(50, 480);
+        glVertex2f(25, 5);  // one point of coordinates axis y
+	    glVertex2f(25, 680);
     
-		glVertex2f(50, 480);  // one part point of axis y
-        glVertex2f(45, 470);
-		glVertex2f(50, 480);  // two part point of axis y
-        glVertex2f(55, 470);		
+		glVertex2f(25, 680);  // one part point of axis y
+        glVertex2f(20, 670);
+		glVertex2f(25, 680);  // two part point of axis y
+        glVertex2f(30, 670);		
 
-	//  Drawing lines on axis y:     ( x = 2.56;  156 * x = 400 )
-	    glVertex2f(45, 400);  // 151.99
-        glVertex2f(55, 400);
-		//output(35,400, "151.99");
+	//  Drawing lines on axis y:     ( x = 3.846153 ;  156 * x = 600 ) 
+	    glVertex2f(27, 600);  // 156
+        glVertex2f(23, 600);
 
-		glVertex2f(45, 390);  // 156
-        glVertex2f(55, 390);
-		//output(35,410, "156");
+		glVertex2f(27, 584.576923);  // 151.99
+        glVertex2f(23, 584.576923);
 
-	    glVertex2f(45, 379);  // 147.99
-        glVertex2f(55, 379);
-		//output(35,420, "147.99");
+	    glVertex2f(27, 569.192182);  // 147.99
+        glVertex2f(23, 569.192182);
 
-		for(short i = 60; i < 890; i += 10)
+		for(short i = 25; i < 990; i += 5)
 		{
-		    glVertex2f(i, 45);  // other lines on axis x
-            glVertex2f(i, 55);
+		    glVertex2f(i, 7.5);  // other lines on axis x
+            glVertex2f(i, 2.5);
 		}
+
 
 	//  Drawing function to lines:
 		for(short i = 0; i < 5; ++i)
 		{
-			float xbuf = 50;
-			for(short m = 0; m < 99; ++m)
+			float xbuf = 25;
+			for(short m = 0; m < 999; ++m)
 			{
-			   float buf = 2.56 * cntrlpoints[m][i];
-	           glVertex2f(xbuf, buf); 
+				float buf = 0;
+				/*
+				if(cntrlpoints[m][i] < 20)
+				{
+					buf = 3.846153 * cntrlpoints[m][i];
+				glVertex2f(xbuf, buf);	
 
-			   xbuf += 10;  // step
+				xbuf += 10;  // step
 
-			   buf = 2.56 * cntrlpoints[m+1][i];
-               glVertex2f(xbuf, buf);
+				buf = 3.846153 * cntrlpoints[m+1][i];
+                glVertex2f(xbuf, buf);
+					continue;
+				}
+				*/
+				buf = 3.846153 * cntrlpoints[m][i];
+				glVertex2f(xbuf, buf);	
+
+				xbuf += 5 + (m/10000000);  // step
+
+				buf = 3.846153 * cntrlpoints[m+1][i];
+                glVertex2f(xbuf, buf);
 			}
-		}
+
+
+	    }
 		
 
 	glEnd();
     glFlush();
+
+	/*
+    for(int i = 0; i < 1000; i++)
+    {
+       for(int j = 0; j < 5; j++)
+       {
+		   cout << schema[i][j] << " / ";
+       }
+       cout << endl;
+    }
+	*/
+
 }
 
 int main(int argc, char** argv)
@@ -129,17 +152,16 @@ int main(int argc, char** argv)
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE);
-    glutInitWindowSize(900, 780);
+    glutInitWindowSize(1000, 680);
     glutInitWindowPosition(100, 100);
     glutCreateWindow("Hello world :D");
 
 	glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluOrtho2D(0, 900, 0, 780);
+    gluOrtho2D(0, 1000, 0, 680);
 
 	glutDisplayFunc(displayMe);
     glutMainLoop();
 
     return 0;
 }
-
