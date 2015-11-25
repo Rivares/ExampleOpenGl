@@ -121,7 +121,7 @@ void displayMe()
 				buf = 3.846153 * cntrlpoints[m][i];
 				glVertex2f(xbuf, buf);	
 
-				xbuf += 5 + (m/10000000);  // step
+				xbuf += 7.5 + (m/10000000);  // step
 
 				buf = 3.846153 * cntrlpoints[m+1][i];
                 glVertex2f(xbuf, buf);
