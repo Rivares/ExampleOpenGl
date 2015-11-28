@@ -1,4 +1,3 @@
-
 #include "stdafx.h"
 #include <iostream>
 #include <cstring>
@@ -28,7 +27,7 @@ void output(GLfloat x, GLfloat y, char* text)
 void displayMe()
 {
 	GLfloat cntrlpoints[1000][5];
-	double  t = 0.0005, Gamma = 10016.6311911 * t / 140;
+	double  t = 0.00000000895985, Gamma = 7812623.224021 * t / 140; // 10016.6311911
     double  schema[1000][5], buf[5] = {0, 156, 151.99, 147.99, 0};
     memset(schema, 0, sizeof(schema));
 
@@ -45,7 +44,8 @@ void displayMe()
        {
            //schema[i][j] = ( (1 - (2*Gamma) ) * schema[i-1][j] ) + ( Gamma *(schema[i-1][j+1] + schema[i-1][j-1])) - ((i*0.02));
 		   //schema[i][j] = (-Gamma) * ( schema[i-1][j+1] + schema[i-1][j-1] ) + schema[i-1][j] - (i*0.02);
-		   schema[i][j] = schema[i-1][j] * ( (-Gamma) - (t * 0.001) + 1) + (Gamma * schema[i-1][j-1]) + (t * 0.001 * 120);
+		   //schema[i][j] = schema[i-1][j] * ( (-Gamma) - (t * 0.001) + 1) + (Gamma * schema[i-1][j-1]) + (t * 0.001 * 120);
+		   schema[i][j] = schema[i-1][j] * ( (Gamma) - (t * 0.001) + 1) - (Gamma * schema[i-1][j-1]) + (t * 0.001 * 120);
        }
     }
 
@@ -110,9 +110,7 @@ void displayMe()
 				{
 					buf = 3.846153 * cntrlpoints[m][i];
 				glVertex2f(xbuf, buf);	
-
 				xbuf += 10;  // step
-
 				buf = 3.846153 * cntrlpoints[m+1][i];
                 glVertex2f(xbuf, buf);
 					continue;
@@ -121,7 +119,7 @@ void displayMe()
 				buf = 3.846153 * cntrlpoints[m][i];
 				glVertex2f(xbuf, buf);	
 
-				xbuf += 7.5 + (m/10000000);  // step
+				xbuf += 1 + (m/10);  // step
 
 				buf = 3.846153 * cntrlpoints[m+1][i];
                 glVertex2f(xbuf, buf);
@@ -133,6 +131,7 @@ void displayMe()
 
 	glEnd();
     glFlush();
+
 
 	/*
     for(int i = 0; i < 1000; i++)
