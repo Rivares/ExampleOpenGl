@@ -26,9 +26,9 @@ void output(GLfloat x, GLfloat y, char* text)
 
 void displayMe()
 {
-	GLfloat cntrlpoints[1000][5];
-	double  t = 0.00000000895985, Gamma = 7812623.224021 * t / 140; // 10016.6311911
-    double  schema[1000][5], buf[5] = {0, 156, 151.99, 147.99, 0};
+	GLfloat cntrlpoints[10000][5];
+	double  t = 0.0895985, Gamma = 7812623.224021 * t / 14000000000; // 10016.6311911
+    double  schema[10000][5], buf[5] = {0, 156, 151.99, 147.99, 0};
     memset(schema, 0, sizeof(schema));
 
     for(int i = 0; i < 5; i++)
@@ -38,7 +38,7 @@ void displayMe()
 
     // DEFINED FOR ALL SCHEMA
 
-    for(int i = 1; i < 1000; i++)   // n: t
+    for(int i = 1; i < 10000; i++)   // n: t
     {
        for(int j = 1; j < 4; j++)  // i: z
        {
@@ -50,7 +50,7 @@ void displayMe()
     }
 
 	
-    for(int i = 0; i < 1000; i++)
+    for(int i = 0; i < 10000; i++)
     {
        for(int j = 0; j < 5; j++)
        {
@@ -58,9 +58,9 @@ void displayMe()
        }
        cout << endl;
     }
-
+	/*
 	//------------------------------------------------------------------------------------------------
-
+	
     glClear(GL_COLOR_BUFFER_BIT);
     glBegin(GL_LINES);
 
@@ -91,7 +91,7 @@ void displayMe()
 	    glVertex2f(27, 569.192182);  // 147.99
         glVertex2f(23, 569.192182);
 
-		for(short i = 25; i < 990; i += 5)
+		for(short i = 25; i < 9990; i += 5)
 		{
 		    glVertex2f(i, 7.5);  // other lines on axis x
             glVertex2f(i, 2.5);
@@ -102,7 +102,7 @@ void displayMe()
 		for(short i = 0; i < 5; ++i)
 		{
 			float xbuf = 25;
-			for(short m = 0; m < 999; ++m)
+			for(short m = 0; m < 9999; ++m)
 			{
 				float buf = 0;
 				/*
@@ -115,7 +115,7 @@ void displayMe()
                 glVertex2f(xbuf, buf);
 					continue;
 				}
-				*/
+				
 				buf = 3.846153 * cntrlpoints[m][i];
 				glVertex2f(xbuf, buf);	
 
@@ -131,10 +131,10 @@ void displayMe()
 
 	glEnd();
     glFlush();
+	*/
 
-
-	/*
-    for(int i = 0; i < 1000; i++)
+	
+    for(int i = 0; i < 10000; i++)
     {
        for(int j = 0; j < 5; j++)
        {
@@ -142,7 +142,7 @@ void displayMe()
        }
        cout << endl;
     }
-	*/
+	
 
 }
 
