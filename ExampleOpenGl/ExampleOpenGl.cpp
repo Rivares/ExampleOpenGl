@@ -18,9 +18,8 @@ using namespace std;
 
 void x1Thread(int N, vector<vector<double> > &x1, double buf1[]);
 void y1Thread(int N, vector<vector<double> > &y1, double buf2[]);
+
 long double timeBeg = clock();
-
-
 
 
 
@@ -44,7 +43,6 @@ void displayMe()
 	int N =10000, z = 5;
 	//GLfloat cntrlpointsJ[10000][5];
 	double  Rp = 0.0191806, Rj = 0.0000777, t1 = 3, Gamma1 = (0.05654433 * t1) / 0.5, Gamma2 = (0.0002291314 * t1) / 0.5;
-	//double  x1[10000][5], y1[10000][5], 
 	double buf1[5] = {160, 160,  156, 151.99, 147.99},
 	buf2[5] = {120.37, 120.37, 124.38, 128.38, 132.39};
 
@@ -113,8 +111,6 @@ void displayMe()
     }
 
 
-
-
     for(int i = 0; i < N; i++)
     {
        for(int j = 0; j < z; j++)
@@ -130,42 +126,43 @@ void displayMe()
     glClear(GL_COLOR_BUFFER_BIT);
     glBegin(GL_LINES);
 
-	 // Drawing axis coordinates:
-        glVertex2f(25, 5);  // one point of coordinates axis x
-        glVertex2f(1000, 5);
+	    short x0 = 25, xN = 1000, y0 = 5, yN = 680;
+	    // Drawing axis coordinates:
+        glVertex2f(x0, y0);                          // one point of coordinates axis x
+        glVertex2f(xN, y0);
 
-		glVertex2f(1000, 5);  // one part point of axis x
-        glVertex2f(990, 10);
-		glVertex2f(1000, 5);  // two part point of axis x
-        glVertex2f(990, 0);
+		glVertex2f(xN, y0);							// one part point of axis x
+        glVertex2f(xN-10, y0+5);
+		glVertex2f(xN, y0);							// two part point of axis x
+        glVertex2f(xN-10, y0-5);
 
-        glVertex2f(25, 5);  // one point of coordinates axis y
-	    glVertex2f(25, 680);
+        glVertex2f(x0, y0);							// one point of coordinates axis y
+	    glVertex2f(x0, yN);
     
-		glVertex2f(25, 680);  // one part point of axis y
-        glVertex2f(20, 670);
-		glVertex2f(25, 680);  // two part point of axis y
-        glVertex2f(30, 670);		
+		glVertex2f(x0, yN);							// one part point of axis y
+        glVertex2f(x0-4, yN-10);
+		glVertex2f(x0, yN);							// two part point of axis y
+        glVertex2f(x0+4, yN-10);		
 
-	//  Drawing lines on axis y:     ( x = 3.846153 ;  156 * x = 600 ) 
-	    glVertex2f(27, 600);  // 156
-        glVertex2f(23, 600);
+	    //  Drawing lines on axis y:     ( x = 3.846153 - coeff scalability;  156 * x = 600 ); 3.846153*0.66666*cntrlpointsP[0][1]
+	    glVertex2f( x0+3, 3.846153*0.66666*cntrlpointsP[0][1] );		// 160
+        glVertex2f( x0-3, 3.846153*0.66666*cntrlpointsP[0][1] );
 
-		glVertex2f(27, 584.576923);  // 151.99: 584.576923 , 584.576923
-        glVertex2f(23, 584.576923);
+		glVertex2f( x0+3, 3.846153*cntrlpointsP[0][2]/2 );			   // 156
+        glVertex2f( x0-3, 3.846153*cntrlpointsP[0][2]/2 );
 
-	    glVertex2f(27, 569.192182);  // 147.99: 569.192182 , 569.192182
-        glVertex2f(23, 569.192182);
+		glVertex2f( x0+3, 3.846153*cntrlpointsP[0][3]/3 );			   // 151.99
+        glVertex2f( x0-3, 3.846153*cntrlpointsP[0][3]/3 );
+
 
 		for(short i = 25; i < N-10; i += 25)
 		{
-		    glVertex2f(i, 7.5);  // other lines on axis x
-            glVertex2f(i, 2.5);
+		    glVertex2f(i, y0+3);									   // other lines on axis x
+            glVertex2f(i, y0-3);
 		}
 
-		
-		
-	//  Drawing function to lines:
+				
+	    //  Drawing function to lines:
 		
 		for(short i = 1; i < (z-1); ++i)
 		{
@@ -173,13 +170,19 @@ void displayMe()
 			for(short m = 0; m < N-1; ++m)
 			{
 				float buf1 = 0;			
-				buf1 = 3.846153 * cntrlpointsP[m][i];
-				glVertex2f(xbuf, buf1);	
+				buf1 = (3.846153) * cntrlpointsP[m][i];
+				if (i == 1)										// for scalability
+					glVertex2f(xbuf, buf1/(i/0.66666));
+				else 
+					glVertex2f(xbuf, buf1/i);	
 
-				xbuf += 25 ;//+ (m/10);  // step
+				xbuf += 1;									   // step
 
-				buf1 = 3.846153 * cntrlpointsP[m+1][i];
-                glVertex2f(xbuf, buf1);
+				buf1 = (3.846153) * cntrlpointsP[m+1][i];
+				if (i == 1)
+					glVertex2f(xbuf, buf1/(i/0.66666));
+                else 
+					glVertex2f(xbuf, buf1/i);
 			}
 
 
@@ -192,6 +195,27 @@ void displayMe()
 	output(35, 660, "T,'C");
 	output(860, 50, "t*10^(4) sec");
 	output(10, 5, "0");
+
+	output(x0, 3.846153*0.66666*cntrlpointsP[0][1], "160");
+	output(x0, 3.846153*cntrlpointsP[0][2]/2, "156");
+	output(x0, 3.846153*cntrlpointsP[0][3]/3, "151.99");
+	
+/*  union cnvrt
+	{
+	    float dt;
+		char bdt[sizeof(float)];
+	};
+
+    cnvrt it;
+*/
+
+
+	
+	char it[]={"0.40.81.21.6  2   2.42.8  3  3.4 3.8"};
+	/*for(short i = 1; i < (11); ++i) // 25 - step on time i < (N-1/25)
+	{	output(x0+(i*25), y0+10,  &it[i-1]);
+	}*/
+	output(x0+(10), y0+10,  it);
 
 
 
